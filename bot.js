@@ -11,5 +11,6 @@ bot.onText(/\/start/, (msg) => {
 // Обработчик текстовых сообщений
 bot.on('message', (msg) => {
     const chatId = msg.chat.id;
+    console.log('fffg', 'sssss')
     bot.sendMessage(chatId, 'Вы написали: ' + msg.text);
 });
