@@ -4,28 +4,28 @@ const bot = new TelegramBot(token, { polling: true });
 
 bot.onText(/\/start/, (msg) => {
     const chatId = msg.chat.id;
-    const replyMarkup = {
+    const menu = {
         reply_markup: {
-            keyboard: [
-                [{ text: 'Кнопка 1' }, { text: 'Кнопка 2' }],
-                [{ text: 'Кнопка 3' }]
-            ],
-            resize_keyboard: true,
-            one_time_keyboard: true
+            inline_keyboard: [
+                [{ text: 'Меню 1', callback_data: 'menu1' }],
+                [{ text: 'Меню 2', callback_data: 'menu2' }],
+                [{ text: 'Помощь', callback_data: 'help' }]
+            ]
         }
     };
-    bot.sendMessage(chatId, 'Выберите опцию:', replyMarkup);
+    bot.sendMessage(chatId, 'Добро пожаловать! Выберите опцию:', menu);
 });
 
-bot.on('message', (msg) => {
-    const chatId = msg.chat.id;
-    if (msg.text === 'Кнопка 1') {
-        bot.sendMessage(chatId, 'Вы нажали на Кнопку 1');
-    } else if (msg.text === 'Кнопка 2') {
-        bot.sendMessage(chatId, 'Вы нажали на Кнопку 2');
-    } else if (msg.text === 'Кнопка 3') {
-        bot.sendMessage(chatId, 'Вы нажали на Кнопку 3');
-    } else {
-        bot.sendMessage(chatId, 'Неизвестная команда');
+bot.on('callback_query', (callbackQuery) => {
+    const message = callbackQuery.message;
+    const chatId = message.chat.id;
+    const data = callbackQuery.data;
+
+    if (data === 'menu1') {
+        bot.sendMessage(chatId, 'Вы выбрали Меню 1');
+    } else if (data === 'menu2') {
+        bot.sendMessage(chatId, 'Вы выбрали Меню 2');
+    } else if (data === 'help') {
+        bot.sendMessage(chatId, 'Это секция помощи.');
     }
 });
